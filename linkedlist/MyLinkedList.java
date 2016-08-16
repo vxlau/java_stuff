@@ -49,8 +49,41 @@ public class MyLinkedList<T> {
     public void deleteFront(){
         if(head == null){
             System.out.println("list is empty");
+        }else {
+            Node<T> tmp = head;
+            head = tmp.getNextRef();
+            if(head == null) {
+                tail == null;
+            }
         }
     }    
+    
+    public void deleteAfter(T after) {
+        Node<T> tmp = head;
+        Node<T> refNode = null;
+
+        while(true){  //just to find the target
+            if(tmp == null){
+                break;
+            }
+            if(tmp.compareTo(after) == 0) {
+                refNode = tmp;
+                break;
+            }
+            tmp= temp.getNextRef();
+        }
+        if(refNode != null) {
+            tmp = refNode.getNextRef();
+            refNode.setNextRef(tmp.getNextRef());
+            if(refNode.getNextRef() == null){
+                tail = refNode;
+            }
+        } else {
+            System.out.println("unable to find element");
+        }
+
+
+    }
 
 
 
