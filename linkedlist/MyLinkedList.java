@@ -53,7 +53,7 @@ public class MyLinkedList<T> {
             Node<T> tmp = head;
             head = tmp.getNextRef();
             if(head == null) {
-                tail == null;
+                tail = null;
             }
         }
     }    
@@ -70,7 +70,7 @@ public class MyLinkedList<T> {
                 refNode = tmp;
                 break;
             }
-            tmp= temp.getNextRef();
+            tmp= tmp.getNextRef();
         }
         if(refNode != null) {
             tmp = refNode.getNextRef();
@@ -81,10 +81,59 @@ public class MyLinkedList<T> {
         } else {
             System.out.println("unable to find element");
         }
+    }
+
+    public void delete(T element){
+        Node<T> tmp = head;
+        Node<T> prev = head;
+
+        while(true) {
+            if(tmp == null){
+                break;
+            }
+            if(tmp.compareTo(element) == 0) {
+                prev.setNextRef(tmp.getNextRef());
+                if(prev.getNextRef() == null){
+                    tail = prev;
+                }
+                break;
+            }
+
+            prev = tmp;
+            tmp=tmp.getNextRef();
+        }
+        if(prev == null){
+            System.out.println("unable to find element");
+        }
+    }
+
+    public void traverse(){
+        Node<T> tmp = head;
+        while(true){
+            if(tmp == null){
+                break;
+            }
+            System.out.println(tmp.getValue());
+            tmp = tmp.getNextRef();
+        }
+    }
+
+
+    public static void main (String args[]) {
+        MyLinkedList<String> mll = new MyLinkedList<String>();
+
+        mll.add("hi");
+        mll.add("hello");
+        mll.addAfter("after", "hi");
+        mll.deleteFront();
+        mll.deleteAfter("after");
+        mll.add("another");
+        mll.add("another2");
+        //mll.delete("another"); 
+        mll.traverse();
 
 
     }
-
 
 
 }
@@ -101,12 +150,15 @@ class Node<T> implements Comparable<T>{
     public void setValue(T value) {
         this.value = value;
     }
+    public void setNextRef(Node<T> ref){
+        nextRef = ref;
+    }
 
     public Node<T> getNextRef() {
         return nextRef;
     }
 
-    $Override
+    @Override
     public int compareTo(T arg) {
         if( arg == this.value){
             return 0;

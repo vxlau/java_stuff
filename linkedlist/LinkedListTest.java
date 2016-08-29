@@ -11,6 +11,7 @@ public class LinkedListTest{
         ll.add("A");
         ll.addFirst("First");
         ll.addLast("Last");
+        
 
        //while(ll.remove("A")){};
 //        ll.remove("A"); //remove first A
@@ -19,7 +20,8 @@ public class LinkedListTest{
         ll.removeLast();
 
         Object val = ll.get(0);
-          
+        ll.remove("A");
+        ll.remove("B");
         System.out.println(ll);
 
         System.out.println( (String)val );
