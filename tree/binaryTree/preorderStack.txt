@@ -1,0 +1,23 @@
+
+
+print current node. keep track of right node. move left
+
+while not empty
+
+    if (p != null)
+        print p;
+        push (p.right) if not null
+        p = p.left;
+    else {
+        p = pop stack
+   }
+}
+
+
+#another way
+push root
+while stack not empty{
+        pop stack and print
+        push right if not null
+        push left if not null
+        

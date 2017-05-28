@@ -1,0 +1,176 @@
+import java.util.*;
+
+/*
+    Comparable interface - (String, Double, BigInterger already implements this)
+        compable of comparing itself with another object    
+    a.compareTo(b)
+    -------
+    comparator-comparing two different object. Might want to create a comparator object to pass to sort.
+    comparison method for classes that you have no control over
+        compapre(a,b)
+
+    negative - this < that
+    0  ==
+    positive this > that
+
+*/
+public class BST <T extends Comparable<T>> implements Iterable<T>
+{
+    public static void main(String[] args) {
+
+    }
+
+    private Node<T> root;
+    private Comparator<T> comparator;
+
+    public BST(){
+        root = null;
+        comparator = null;
+    }
+
+    public BST(Comparator<T> comp){
+        root = null;
+        comparator = comp;
+    }
+    private int compare(T x, T y){
+        if(comparator == null){
+            return x.compareTo(y);
+        } else {
+            return comparator.compare(x,y);
+        }
+    }
+
+// Insert
+    public void insert(T data){
+        root = insert(root, data);
+    }
+
+    private Node<T> insert(Node<T> p, T toInsert){
+        if ( p == null){
+            return new Node<T>(toInserT);
+        }
+        if (compare(toInsert, p.data) == 0){  //equal
+            return p;
+        }
+        if (compare(toInsert, p.data) < 0){  //new node less than parent
+            p.left = insert(p.left, toInsert);
+        }else{
+            p.right = insert(p.right, toInsert);
+        }
+        return p;
+
+    }
+
+//Search
+    public boolean search(T toSearch){
+        return search(root, toSearch);
+    }
+    private boolean search(Node<T> p, T toSearch){
+        if (p == null){
+            return false;
+        }else if (compare(toSearch, p.data) == 0){
+            return true;
+        }else if (compare(toSearch, p.data) < 0) {
+            search(p.left, toSearch);
+        }else{
+           search(p.right, toSearch);
+        }
+    }
+
+//Delete
+    //finding replacement for deleted node (which is considered root)
+    //smallest value on right side, or largest value on left side.
+    // left most value of right side.
+    // or right most value of left side.
+    public void delete(T toDelete){
+        root = delete(root, toDelete);
+    }
+    private Node<T> delete(Node<T> p, T toDelete){
+        if (p == null){
+            throw new RuntimeException("cannot delete");
+        }else if (compare(toDelete, p.data) < 0){
+            p.left = delete(p.left, toDelete);
+        }else if (compare(toDelete, p.data) > 0){
+            p.right = delete(p.right, toDelete);
+        }else {//found match
+            if (p.left == null) { //if one side is empty,just move the other side
+                return p.right;
+            }
+            else if (p.right == null){
+                return p.left;
+            } else { //has two children
+                p.data = retrieveData(p.left);
+                //delete the rightmost node in left subtree
+                p.left = delete(p.left, p.data);
+            } 
+        }
+        return p;
+
+    }
+
+    private T retrieveData(Node<T> p){
+        while (p.right != null){
+            p=p.right;
+        }
+        return p.data;
+    }
+
+//toString
+    public String toString(){
+        StringBuffer sb = new StringBuffer();
+        for (T data: this) sb.append(data.toString());
+        return sb.toString();
+    }
+
+//Traversal
+    public void preOrderTraversal(){
+        preOrderHelper(root);
+    }
+    private void preOrderHelper(Node r){
+        if(r != null){
+            System.out.print(r+" ");
+            preOrderHelper(r.left);
+            preOrderHelper(r.right);
+        }
+    }
+
+    public void inOrderTraversal(){
+        inOrderHelper(root);
+    }
+    private void inOrderHelper(Node r){
+        if(r != null){
+            inOrderHelper(r.left);
+            System.out.print(r+" ");
+            inOrderHelper(r.right);
+        }
+    }
+
+
+
+    
+    private class Node<T>{
+        private T data;
+        private Node<T> left, right;
+
+        public Node(T data, Node<T> l, Node<T> r){
+            left = l; right = r;
+            this.data = data;
+        }
+        
+        public Node(T data){
+            this(data, null, null); 
+        }
+
+        public String toString(){
+            return data.toString();
+        }
+    }
+
+    
+
+}
+
+
+
+
+

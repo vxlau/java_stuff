@@ -31,6 +31,9 @@ public class MyQueue<T> {
             throw new NoSuchElementException();
         }else {
             head = head.next;
+            if (head == null){  //not really needed b/c add will take care of.
+                tail = null;
+            }
             size--;
         }
         return removedItem;

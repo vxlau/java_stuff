@@ -1,0 +1,23 @@
+push parent
+
+while (stack is not empty)
+{
+    tmp = stack.peek();
+
+    if(tmp.left and rmp.right is null)
+    {
+        pop stack and print;
+    }
+
+    else{
+        if tmp.right != null)
+            stack.push right node;
+            tmp.right = null;
+        }
+        
+        if(tmp.left != null){
+            push left;
+            tmp.left = null;
+        }
+    }
+}
