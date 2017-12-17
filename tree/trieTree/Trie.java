@@ -1,3 +1,4 @@
+import java.util.*;
 
 public class Trie {
     static final int ALPHABET_SIZE = 26; 
@@ -47,6 +48,73 @@ public class Trie {
             pCrawl = pCrawl.children[index]; 
         }
         return (pCrawl != null && pCrawl.isEndOfWord);
+    }
+
+/*
+    dsf. if isEndOfWord, print word. 
+    if leaf node, go back up. 
+    build up word as you go along. 
+*/
+
+    static boolean prefixDFS(TrieNode pNode, String word){
+        char letter;
+        if (pNode.isEndOfWord){  //leaf node also have isEndOfWord marked. 
+            System.out.println(word);
+        }
+        if (isLeafNode(pNode)){
+            return true;
+        }else{
+            for (int j=0; j<ALPHABET_SIZE; j++){
+                int indexInt = j + 'a';
+                char wordChar = (char)indexInt;
+                if (pNode.children[j] != null){
+                    prefixDFS(pNode.children[j], word +wordChar );
+                }
+            }    
+        }
+        return false;
+    }
+
+    //same as above but returns array instead of printing to stdout. 
+    static ArrayList<String> prefixDFSArray(TrieNode pNode, String word){
+        ArrayList<String> foundWords = new ArrayList<String>();
+        char letter;
+        if (pNode.isEndOfWord){  //leaf node also have isEndOfWord marked. 
+            foundWords.add(word);
+            //System.out.println(word);
+        }
+        if (isLeafNode(pNode)){
+            return foundWords;
+        }else{
+            for (int j=0; j<ALPHABET_SIZE; j++){
+                int indexInt = j + 'a';
+                char wordChar = (char)indexInt;
+                if (pNode.children[j] != null){
+                    foundWords.addAll( prefixDFSArray(pNode.children[j], word +wordChar) );
+                }
+            }    
+        }
+        return foundWords;
+    }
+
+
+    static boolean wordsWithPrefix(String prefix){
+        ArrayList<String> foundWords = new ArrayList<String>();
+        int prefixLength = prefix.length();
+        TrieNode pCrawl = root;
+        for (int i = 0; i< prefixLength; i++){
+            int index = prefix.charAt(i) - 'a';
+            if (pCrawl.children[index] == null){
+                return false;
+            }
+            pCrawl= pCrawl.children[index];
+        }
+        foundWords.addAll(prefixDFSArray(pCrawl, prefix));  //prefixDFSArray vs prefixDFS here 
+
+        for (String word : foundWords){
+            System.out.println(word);
+        }
+        return true;
     }
 
 
@@ -111,18 +179,19 @@ public class Trie {
 
     public static void main(String args[]){
         //only a - z and lowercase
-        String keys[] = {"the", "a", "there", "answer", "any","cattle", "cat"};
+        String keys[] = {"bind", "bin", "bit", "be","been"};
 
         root = new TrieNode();
         for (int i = 0; i < keys.length; i++){
             insert(keys[i]);
         }
- 
+ /*
         System.out.println( search("cattle")); 
         delete("cattle"); 
         System.out.println( search("cattle")); 
         System.out.println( search("cat")); 
-
+*/
+        wordsWithPrefix("b");
     }
 
 
